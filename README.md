@@ -1,4 +1,4 @@
-# 📢 LinkedIn Content Workflow - n8n  
+# 📢 Content Workflow - n8n  
 
 Workflow built in **n8n** to automate the creation and publishing of LinkedIn posts with both **text and images**.  
 It combines **OpenAI** (for text generation) with **image models** like OpenAI DALL·E 3 or Replicate Flux, and then automatically publishes the final content to a LinkedIn account or organization.  
