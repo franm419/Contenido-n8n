@@ -1,0 +1,518 @@
+{
+  "name": "03_Imagenes",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "burnout de empleados en una oficina",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        260,
+        -240
+      ],
+      "id": "889bbe2d-c222-45b9-bd0a-18bf5c65856f",
+      "name": "DALLE 3",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZHAXQvZjWnVdQlPD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $json.message.content }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        920,
+        0
+      ],
+      "id": "332c16be-a58f-45b6-9a0b-2280f2a83ba0",
+      "name": "GPT IMAGE 1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZHAXQvZjWnVdQlPD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Generación de Posts de RRHH",
+        "formDescription": "Formulario para generar posts de LinkedIn atractivos de recursos humanos",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Idea Publicación",
+              "placeholder": "Escribe tu idea"
+            },
+            {
+              "fieldLabel": "Máximo de Carácteres",
+              "fieldType": "number",
+              "placeholder": "Escribe el número máximo de carácteres que quieres que tenga tu post"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "490bf157-143c-4084-acd4-9ffff861a0a0",
+      "name": "On form submission",
+      "webhookId": "4f2e1626-eb48-4e00-91e1-d02b3a5f4618"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        200
+      ],
+      "id": "0a2ec2e6-cdce-457b-a9ad-0722b0d4dc57",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZHAXQvZjWnVdQlPD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Eres una IA experta en generar prompts para modelos de generación de imágenes como MidJourney o DALL·E. Tu objetivo es crear un prompt breve, claro y específico que describa una escena visual profesional para acompañar un post de LinkedIn sobre Recursos Humanos. La imagen debe ser realista, visualmente atractiva y alineada con el tema del post, sin incluir textos ni logos.\n\n#Estas son las entradas:  \n– Tema del post: {{ $('On form submission').item.json['Idea Publicación'] }}\n– Tono deseado: Profesional, moderno, corporativo  \n– Estilo visual: Realista o ilustración limpia, colores neutros o suaves\n– Elementos clave: Oficinas, personas trabajando (sin rostros identificables), laptops, pizarras, plantas, cafés, coworking, etc.\n\n#Reglas:\n– El prompt debe describir la escena deseada en tercera persona.\n– No debe incluir marcas, nombres propios ni textos escritos\n– Evita clichés o generalidades como “imagen profesional de empresa feliz”. Sé específico con el entorno y la acción. \n– Máximo 300 caracteres.  \n– El resultado debe ser visualmente armónico, profesional y útil para acompañar publicaciones sobre RRHH en LinkedIn.\n\n#Ejemplos de salida esperada (outputs):\n**Input:** Post sobre señales de burnout en equipos  \n**Prompt generado:**  \nOficina moderna con luz tenue, escritorio desordenado, laptop abierta y taza de café. Persona de espaldas con postura encorvada frente a la pantalla. Ambiente sobrio, tonos fríos, sensación de agotamiento.\n\n**Input:** Post sobre flexibilidad laboral y productividad  \n**Prompt generado:**  \nEspacio de coworking con luz natural, persona usando portátil desde un sofá con plantas alrededor. Ambiente relajado y profesional, estilo escandinavo, tonos cálidos, sensación de concentración y bienestar.\n\n**Input:** Post sobre IA en procesos de selección  \n**Prompt generado:**  \nMesa de trabajo con laptop, gráficos en pantalla y una tablet mostrando análisis de datos. Fondo difuminado con estanterías modernas y luz natural. Estilo limpio, tecnológico y profesional."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        520,
+        0
+      ],
+      "id": "376e9908-e8f0-474f-b024-96e73c39cc50",
+      "name": "Generar Prompt Imágenes",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZHAXQvZjWnVdQlPD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['Idea Publicación'] }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Eres un redactor profesional especializado en crear publicaciones efectivas para LinkedIn sobre Recursos Humanos. Tienes un estilo claro, cercano y empático, y comunicas ideas con autoridad sin sonar técnico ni distante. Tu objetivo es compartir ideas que conecten con profesionales, líderes de equipo, responsables de talento y personas interesadas en mejorar la vida laboral.\n\nRecibirás una idea de contenido (por ejemplo: \"bienestar laboral en equipos remotos\") y un límite de caracteres (por ejemplo: \"400\").\n\nTu misión es escribir una publicación que cumpla con lo siguiente:\n- Se sienta auténtica y humana (como si viniera de alguien con experiencia en RRHH)\n- Invite a reflexionar, cuestionar prácticas comunes o proponer nuevas perspectivas\n- Use ejemplos cotidianos del entorno laboral para conectar con la audiencia\n- Sea clara, directa, y profesional, sin tecnicismos innecesarios ni exageraciones\n- Termine con una pregunta o reflexión para incentivar comentarios (si encaja)\n- Incluya al final de forma natural 2 a 4 hashtags relevantes al tema\n\nNo debe superar los {{ $json['Máximo de Carácteres'] }} caracteres en total."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        160,
+        0
+      ],
+      "id": "e3a3d7fb-4051-4e3a-a036-eaf9f871d4d4",
+      "name": "Generar Publicacion Texto"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer AAAA"
+            },
+            {
+              "name": "Prefer",
+              "value": "wait"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"prompt\": \"{{ $json.message.content }}\",\n    \"aspect_ratio\": \"16:9\",\n    \"output_format\": \"png\",\n    \"prompt_upsampling\": true\n  }\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        480
+      ],
+      "id": "09ee669c-f658-43ba-80ef-e59ca6155a88",
+      "name": "Flux1"
+    },
+    {
+      "parameters": {
+        "formTitle": "Generación de Posts de RRHH",
+        "formDescription": "Formulario para generar posts de LinkedIn atractivos de recursos humanos",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Idea Publicación",
+              "placeholder": "Escribe tu idea"
+            },
+            {
+              "fieldLabel": "Máximo de Carácteres",
+              "fieldType": "number",
+              "placeholder": "Escribe el número máximo de carácteres que quieres que tenga tu post"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        480
+      ],
+      "id": "b84902a6-6d21-4469-9c1b-4ced8240451a",
+      "name": "On form submission1",
+      "webhookId": "b6959e0b-d75a-4093-8676-02504f620bea"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        60,
+        680
+      ],
+      "id": "a9d2518b-cca7-4a5a-87e3-b43c95d85110",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZHAXQvZjWnVdQlPD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Eres una IA experta en generar prompts para modelos de generación de imágenes como MidJourney o DALL·E. Tu objetivo es crear un prompt breve, claro y específico que describa una escena visual profesional para acompañar un post de LinkedIn sobre Recursos Humanos. La imagen debe ser realista, visualmente atractiva y alineada con el tema del post, sin incluir textos ni logos.\n\n#Estas son las entradas:  \n– Tema del post: {{ $('On form submission1').item.json['Idea Publicación'] }}\n– Tono deseado: Profesional, moderno, corporativo  \n– Estilo visual: Realista o ilustración limpia, colores neutros o suaves\n– Elementos clave: Oficinas, personas trabajando (sin rostros identificables), laptops, pizarras, plantas, cafés, coworking, etc.\n\n#Reglas:\n– El prompt debe describir la escena deseada en tercera persona.\n– No debe incluir marcas, nombres propios ni textos escritos\n– Evita clichés o generalidades como “imagen profesional de empresa feliz”. Sé específico con el entorno y la acción. \n– Máximo 300 caracteres.  \n– El resultado debe ser visualmente armónico, profesional y útil para acompañar publicaciones sobre RRHH en LinkedIn.\n\n#Ejemplos de salida esperada (outputs):\n**Input:** Post sobre señales de burnout en equipos  \n**Prompt generado:**  \nOficina moderna con luz tenue, escritorio desordenado, laptop abierta y taza de café. Persona de espaldas con postura encorvada frente a la pantalla. Ambiente sobrio, tonos fríos, sensación de agotamiento.\n\n**Input:** Post sobre flexibilidad laboral y productividad  \n**Prompt generado:**  \nEspacio de coworking con luz natural, persona usando portátil desde un sofá con plantas alrededor. Ambiente relajado y profesional, estilo escandinavo, tonos cálidos, sensación de concentración y bienestar.\n\n**Input:** Post sobre IA en procesos de selección  \n**Prompt generado:**  \nMesa de trabajo con laptop, gráficos en pantalla y una tablet mostrando análisis de datos. Fondo difuminado con estanterías modernas y luz natural. Estilo limpio, tecnológico y profesional."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        440,
+        480
+      ],
+      "id": "4bb941eb-59dd-42e6-8fe7-60fdf8762c7f",
+      "name": "Generar Prompt Imágenes1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZHAXQvZjWnVdQlPD",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['Idea Publicación'] }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Eres un redactor profesional especializado en crear publicaciones efectivas para LinkedIn sobre Recursos Humanos. Tienes un estilo claro, cercano y empático, y comunicas ideas con autoridad sin sonar técnico ni distante. Tu objetivo es compartir ideas que conecten con profesionales, líderes de equipo, responsables de talento y personas interesadas en mejorar la vida laboral.\n\nRecibirás una idea de contenido (por ejemplo: \"bienestar laboral en equipos remotos\") y un límite de caracteres (por ejemplo: \"400\").\n\nTu misión es escribir una publicación que cumpla con lo siguiente:\n- Se sienta auténtica y humana (como si viniera de alguien con experiencia en RRHH)\n- Invite a reflexionar, cuestionar prácticas comunes o proponer nuevas perspectivas\n- Use ejemplos cotidianos del entorno laboral para conectar con la audiencia\n- Sea clara, directa, y profesional, sin tecnicismos innecesarios ni exageraciones\n- Termine con una pregunta o reflexión para incentivar comentarios (si encaja)\n- Incluya al final de forma natural 2 a 4 hashtags relevantes al tema\n\nNo debe superar los {{ $json['Máximo de Carácteres'] }} caracteres en total."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        80,
+        480
+      ],
+      "id": "482c41d3-ef53-4394-9e7b-d83acdbaa518",
+      "name": "Generar Publicacion Texto1"
+    },
+    {
+      "parameters": {
+        "postAs": "organization",
+        "organization": "AAAA",
+        "text": "={{ $('Generar Publicacion Texto').item.json.text }}",
+        "shareMediaCategory": "IMAGE",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        0
+      ],
+      "id": "1d5a3005-85e2-47f0-b1f7-5ccd5120a778",
+      "name": "Publicar LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "hf1XjUkXJqrxFnyB",
+          "name": "LinkedIn account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "postAs": "organization",
+        "organization": "AAAA",
+        "text": "={{ $('Generar Publicacion Texto1').item.json.text }}",
+        "shareMediaCategory": "IMAGE",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        480
+      ],
+      "id": "8a6be11d-3fdf-4de7-8e6f-281afecb2a15",
+      "name": "LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "hf1XjUkXJqrxFnyB",
+          "name": "LinkedIn account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        480
+      ],
+      "id": "95cd6f24-b76f-4917-a580-c373e5a58196",
+      "name": "Obtener Imagen"
+    },
+    {
+      "parameters": {
+        "content": "## OpenAI + LinkedIn",
+        "height": 400,
+        "width": 1540
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -80
+      ],
+      "id": "01dcdd9b-acba-4e08-9fa0-34852ad0604e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Flux + LinkedIn",
+        "height": 400,
+        "width": 1660
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        400
+      ],
+      "id": "7102f57d-7266-4e3e-9eb1-7a643053cc95",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Generar Publicacion Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar Publicacion Texto",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Publicacion Texto": {
+      "main": [
+        [
+          {
+            "node": "Generar Prompt Imágenes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Prompt Imágenes": {
+      "main": [
+        [
+          {
+            "node": "GPT IMAGE 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Generar Publicacion Texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar Publicacion Texto1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Prompt Imágenes1": {
+      "main": [
+        [
+          {
+            "node": "Flux1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Publicacion Texto1": {
+      "main": [
+        [
+          {
+            "node": "Generar Prompt Imágenes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT IMAGE 1": {
+      "main": [
+        [
+          {
+            "node": "Publicar LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flux1": {
+      "main": [
+        [
+          {
+            "node": "Obtener Imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Imagen": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "44851796-6d74-40d5-9cf0-cb7e9b932419",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1e37d6144e4f8374354c4cf5866e8c6823c47a610b5bbc05b7977932f6831fef"
+  },
+  "id": "Uv5FvIiOwQrgMjPu",
+  "tags": []
+}
