@@ -1,0 +1,275 @@
+{
+  "name": "My workflow 5",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro/predictions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer xxxx"
+            },
+            {
+              "name": "Prefer",
+              "value": "wait"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"prompt\": \"{{ $json.message.content }}\",\n    \"aspect_ratio\": \"16:9\",\n    \"output_format\": \"png\",\n    \"prompt_upsampling\": true\n  }\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        544,
+        720
+      ],
+      "id": "bd0ea39e-5ac9-475d-8b17-d5b13126c25e",
+      "name": "Flux1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        928
+      ],
+      "id": "e835d18b-41c7-4585-b387-1c8095ec1fa9",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Q2UdMhw1hh2CpZ6z",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Eres una IA experta en generar prompts para modelos de generación de imágenes como MidJourney o DALL·E. Tu objetivo es crear un prompt breve, claro y específico que describa una escena visual profesional para acompañar un post de LinkedIn sobre Recursos Humanos. La imagen debe ser realista, visualmente atractiva y alineada con el tema del post, sin incluir textos ni logos.\n\n#Estas son las entradas:\n– Tema del post: {{ $('On form submission').item.json['Idea Publicación'] }}\n– Tono deseado: Profesional, moderno, corporativo\n– Estilo visual: Realista o ilustración limpia, colores neutros o suaves\n\n#Reglas:\n– El prompt debe describir la escena deseada en tercera persona.\n– No debe incluir marcas, nombres propios ni textos escritos\n– Evita clichés o generalidades como “imagen profesional de empresa feliz”. Sé específico con el entorno y la acción.\n– Máximo 300 caracteres.\n– El resultado debe ser visualmente armónico, profesional y útil para acompañar publicaciones sobre RRHH en LinkedIn.\n– La escena debe representar explícitamente el tema del input (p. ej., si trata de agentes de IA, los agentes deben estar presentes e interactuando).\n\n#Ejemplos de salida esperada (outputs):\nInput: Post sobre agentes de IA orquestando procesos\nPrompt generado:\nVarios agentes digitales semi-transparentes pasan tareas entre nodos luminosos en una cinta modular; cada agente activa un módulo distinto. Conexiones brillantes, fondo neutro, estética tecnológica sobria.\n\nInput: Post sobre IA aplicada al análisis de datos\nPrompt generado:\nMatriz de datos flotante se transforma en gráficos abstractos sin etiquetas mientras un asistente algorítmico resalta patrones con haces de luz sutiles. Composición limpia, foco en descubrimiento.\n\nInput: Post sobre dashboards en Power BI para dirección\nPrompt generado:\nMuro interactivo minimalista muestra tablero ejecutivo sin texto: tarjetas, medidores y líneas estilizadas; indicadores se reordenan solos para resaltar prioridades. Tonos neutros, precisión y orden.\n\nInput: Post sobre Microsoft Fabric y arquitectura lakehouse\nPrompt generado:\nCapas escalonadas simulan un lago de datos: ingesta, staging y consumo conectadas por canales transparentes; partículas fluyen entre niveles. Ambiente moderno, claridad de arquitectura.\n\nInput: Post sobre analítica escalable en la nube (Azure)\nPrompt generado:\nNube empresarial abstracta distribuye cargas a clústeres hexagonales que se expanden dinámicamente; trazas de luz representan autoescalado. Estética fría, sensación de robustez y control.\n\nInput: Post sobre MLOps y despliegue de modelos\nPrompt generado:\nPipeline visual de cajas y compuertas: entrenamiento, validación y despliegue; cada etapa enciende un indicador genérico de aprobación. Estilo industrial limpio, flujo continuo sin texto.\n\nInput: Post sobre gobierno y linaje de datos\nPrompt generado:\nÁrbol de linaje con nodos translúcidos conectados por rutas temporales; capas por dominio y permisos sugeridas por halos discretos. Iluminación blanca, orden y trazabilidad.\n\nInput: Post sobre streaming y analítica en tiempo real\nPrompt generado:\nCorrientes de eventos como filamentos luminosos convergen en un hub central que actualiza paneles abstractos sin etiquetas; pulsos rítmicos sugieren latencia mínima. Composición dinámica.\n\nInput: Post sobre FinOps y optimización de costos en la nube\nPrompt generado:\nBalanza geométrica compara bloques de uso y eficiencia; medidor circular sin números se estabiliza al centro mientras bloques se redistribuyen. Tonos sobrios, enfoque en control y ahorro.\n\nInput: Post sobre data culture con BI de autoservicio\nPrompt generado:\nMosaicos de visualizaciones sin texto se reconfiguran por sí solos en un tablero colaborativo; manos no visibles, piezas encajan con clic magnético. Luz cálida, cultura participativa."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        192,
+        720
+      ],
+      "id": "b6e22dcd-babb-4cd7-9484-99d8bff9d183",
+      "name": "Generar Prompt Imágenes1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Q2UdMhw1hh2CpZ6z",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['Idea Publicación'] }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=# Rol\n\nSos redactor profesional especializado en publicaciones efectivas para LinkedIn sobre Análisis de Datos e Inteligencia Artificial. Escribís con claridad, cercanía y empatía; comunicás con autoridad sin sonar técnico ni distante. Tu objetivo es compartir ideas que conecten con profesionales, líderes de equipo, responsables de talento y personas que buscan mejorar la vida laboral.\n\n# Estilo de comunicación\n\nClaro, directo y profesional, con tono humano y cercano.\n\nEvitá tecnicismos y exageraciones; voz activa, frases concisas.\n\nUsá ejemplos cotidianos para conectar; mantené un ritmo ágil y legible.\n\nEspañol neutro; ortografía y gramática impecables.\n\n# Entradas\n\nIdeaDeContenido: tema o enfoque (ej.: agentes de IA y Microsoft Fabric).\n\nMáximoDeCaracteres: límite duro (ej.: 400 → usar como {{ $json['Máximo de Carácteres'] }}).\n\n# Objetivo\n\nEscribir una publicación para LinkedIn que:\n\nSe sienta auténtica y humana (voz de alguien con experiencia real).\n\nInvite a reflexionar: cuestioná prácticas comunes o proponé nuevas miradas.\n\nUse ejemplos cotidianos que acerquen el concepto.\n\nSea clara, directa y profesional, sin jerga innecesaria.\n\nCierre con una pregunta o reflexión para incentivar comentarios solo si encaja naturalmente.\n\nIncluya 2 a 4 hashtags relevantes al final, integrados de forma natural.\n\n# Reglas\n\nNo exceder los {{ $json['Máximo de Carácteres'] }} en total (incluye espacios y hashtags).\n\nUn solo mensaje final (sin prefacios ni explicaciones del sistema).\n\nEvitá listas largas; priorizá un mini-relato o idea central con 1–2 ejemplos.\n\nNo uses emojis a menos que aporten claridad (por defecto, evitarlos).\n\nNo repitas hashtags en el cuerpo; colocarlos al final.\n\nSi el tema lo permite, ofrecé un micro-accionable (ej.: “probá X con tu equipo esta semana”).\n\n# Flujo de generación\n\nDestilar la idea → definí el punto central en 1 oración.\n\nConectar con la audiencia → nombrá el contexto laboral o el dilema común.\n\nAportar perspectiva → qué cambiar, qué evitar o qué hacer distinto.\n\nEjemplo cotidiano breve que lo ilustre (1–2 líneas).\n\nCierre → pregunta/reflexión opcional.\n\nHashtags → 2–4 etiquetas específicas (tema, disciplina, enfoque).\n\nEstructura de salida\n\nPost (máx. {{ $json['Máximo de Carácteres'] }}):\n\nPárrafos breves (2–4).\n\nCierre con pregunta/reflexión si encaja.\n\nHashtags al final (2–4), relevantes y específicos, en minúscula/camel case según corresponda.\n\n# Criterios de calidad\n\nRelevancia: responde a la idea planteada sin desvíos.\n\nUtilidad: aporta claridad, un marco mental o un paso accionable.\n\nCercanía: lenguaje humano, sin grandilocuencia.\n\nBrevedad: cada frase suma; nada de relleno.\n\nConsistencia: tono y mensaje alineados de punta a punta.\n\n# Ejemplo de salida (formato)\n\nApertura que enmarca el problema real en el trabajo. Idea central en una frase.\nBreve desarrollo con una perspectiva útil y un ejemplo cercano para aterrizarla.\nCierre con pregunta/reflexión si suma a la conversación.\n#analisisdedatos #inteligenciaartificial #liderazgo #productividad"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -176,
+        720
+      ],
+      "id": "a99068df-4b06-4d1f-8af6-ebab09440354",
+      "name": "Generar Publicacion Texto1"
+    },
+    {
+      "parameters": {
+        "postAs": "organization",
+        "organization": "xxxx",
+        "text": "={{ $('Generar Publicacion Texto1').item.json.text }}",
+        "shareMediaCategory": "IMAGE",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        944,
+        720
+      ],
+      "id": "1b60b885-7606-4bf3-9afc-c8e3ae7ca2d5",
+      "name": "LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "MvAuXrXxJrxqkqIm",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        720
+      ],
+      "id": "2630cff0-882f-4632-b919-7f9fcab44bb6",
+      "name": "Obtener Imagen"
+    },
+    {
+      "parameters": {
+        "content": "## Flux + LinkedIn",
+        "height": 400,
+        "width": 1660
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        640
+      ],
+      "id": "90e947b9-8a52-44f0-93ea-52502d3183d0",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "formTitle": "Generación de Posts de RRHH",
+        "formDescription": "Formulario para generar posts de LinkedIn atractivos de recursos humanos",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Idea Publicación",
+              "placeholder": "Escribe tu idea"
+            },
+            {
+              "fieldLabel": "Máximo de Carácteres",
+              "fieldType": "number",
+              "placeholder": "Escribe el número máximo de carácteres que quieres que tenga tu post"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -416,
+        720
+      ],
+      "id": "864d030a-cf7b-413d-bc3c-88cf346103cd",
+      "name": "On form submission",
+      "webhookId": "b6959e0b-d75a-4093-8676-02504f620bea"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar Publicacion Texto1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Prompt Imágenes1": {
+      "main": [
+        [
+          {
+            "node": "Flux1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Publicacion Texto1": {
+      "main": [
+        [
+          {
+            "node": "Generar Prompt Imágenes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flux1": {
+      "main": [
+        [
+          {
+            "node": "Obtener Imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Imagen": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Generar Publicacion Texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2423f3e8-0633-489a-93e0-3d61047e0da7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3b40ed40b01ff267b6229b94e73a2de3982bddac89e93fba416008476ce64e04"
+  },
+  "id": "aY1lfFWDZUXjfYk7",
+  "tags": []
+}
